@@ -1,5 +1,6 @@
 package com.example.ecommerce.entities;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +12,27 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "tb_Order")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "cartId", nullable = false, foreignKey = @ForeignKey(name = "fk_order_cart"))
     private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "productId", nullable = false, foreignKey = @ForeignKey(name = "fk_order_product"))
     private Product product;
+
+    @Column(name = "amount", nullable = false, columnDefinition = "int")
     private int amount;
-    private double totalPrice;
+
+    @Column(name = "totalPrice", nullable = false, columnDefinition = "decimal(15,2)")
+    private BigDecimal totalPrice;
+
+    @Column(name = "status", nullable = false, columnDefinition = "varchar(255)")
     private String status;
 
     public void setAmount(int amount){
@@ -25,6 +41,6 @@ public class Order {
     }
 
     private void updateTotalPrice() {
-        this.totalPrice = this.product.getUnitPrice() * this.amount;
+        this.totalPrice = this.product.getUnitPrice().multiply(BigDecimal.valueOf(this.amount));
     }
 }
