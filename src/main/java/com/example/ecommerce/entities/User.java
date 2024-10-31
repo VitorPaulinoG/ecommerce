@@ -13,6 +13,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "tb_User")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
