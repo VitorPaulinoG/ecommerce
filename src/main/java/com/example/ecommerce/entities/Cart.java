@@ -11,6 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Entity
 @Table(name = "tb_Cart")
 public class Cart {
     @Id
